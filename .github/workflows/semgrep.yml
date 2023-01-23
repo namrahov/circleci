@@ -1,9 +1,9 @@
 on:
+  # Scan changed files in PRs (diff-aware scanning):
+  pull_request: {}
+  # Scan mainline branches and report all findings:
   push:
-    branches:
-      - master
-    paths:
-      - .github/workflows/semgrep.yml
+    branches: ["master", "main"]
   # pull_request: {}
   # push:
   #   branches:
