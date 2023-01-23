@@ -24,8 +24,7 @@ jobs:
       - checkout
       - run:
           name: Run tests
-          command:  chmod +x ./gradlew
-          ./gradlew test
+          command:  chmod +x ./gradlew ./gradlew test
   # Dogfood!
   semgrep:
     docker:
