@@ -19,6 +19,7 @@ class VowelControllerTest extends Specification {
     }
 
     def "TestCalculateAverageNumberOfVowels"() {
+
         given:
         def url = "/v1/vowel/average"
 
