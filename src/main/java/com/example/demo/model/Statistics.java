@@ -1,6 +1,7 @@
 package com.example.demo.model;
 
 import lombok.Data;
+
 @Data
 public class Statistics {
     private int count = 0;
@@ -10,6 +11,7 @@ public class Statistics {
         count++;
         sum += word.getCountOfVowelsOfWord();
     }
+
     public Statistics merge(Statistics another) {
         count += another.count;
         sum += another.sum;
