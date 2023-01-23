@@ -9,6 +9,7 @@
 #   which are then accessible at https://dashboard.semgrep.dev/metrics
 #   and also at https://metabase.corp.r2c.dev/collection/59-semgrep
 
+
 version: 2.1
 
 ###############################################################################
@@ -16,6 +17,14 @@ version: 2.1
 ###############################################################################
 
 jobs:
+  test:
+    docker:
+      - image: cimg/openjdk:17.0.1
+    steps:
+      - checkout
+      - run:
+          name: Run tests
+          command: ./gradlew test --info
   # Dogfood!
   semgrep:
     docker:
@@ -99,6 +108,10 @@ jobs:
 
 workflows:
   version: 2
+
+  test-deploy:
+    jobs:
+      - test
 
   # no triggers, runs on every PRs
   semgrep:
