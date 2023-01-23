@@ -56,7 +56,7 @@ public class VowelUtil {
             for (int k = 0; k < words[i].length(); k++) {
                 char letterOfString = words[i].charAt(k);
 
-                Predicate<Character> p = (element) -> vowels.indexOf(element) != -1;
+                Predicate<Character> p = element -> vowels.indexOf(element) != -1;
 
                 if (p.test(letterOfString)) {
                     vowelsOfWord.add(letterOfString);
