@@ -30,7 +30,7 @@ workflows:
   test-deploy:
     jobs:
       - test
-  main:
-    jobs:
       - semgrep-scan
+
+
 
