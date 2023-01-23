@@ -10,8 +10,27 @@ jobs:
           name: Run tests
           command: ./gradlew test --info
 
+  semgrep-scan:
+    parameters:
+      default_branch:
+        type: string
+        default: main
+    environment:
+
+    docker:
+      - image: returntocorp/semgrep
+    steps:
+      - checkout
+      - run:
+          name: "Semgrep scan"
+          command: semgrep ci
+
 
 workflows:
   test-deploy:
     jobs:
       - test
+  main:
+    jobs:
+      - semgrep-scan
+
