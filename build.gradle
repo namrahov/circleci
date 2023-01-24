@@ -41,7 +41,6 @@ dependencies {
 
 tasks.named('test') {
     useJUnitPlatform()
-    finalizedBy jacocoTestReport
 }
 
 def coverageExclusionList = [
@@ -69,7 +68,6 @@ jacoco {
 }
 
 jacocoTestReport {
-    dependsOn test
     reports {
         xml.enabled true
         html.enabled false
