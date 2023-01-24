@@ -19,6 +19,13 @@ public class VowelController {
 
 
 
+
+
+
+
+
+
+
     @GetMapping("/average")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void calculateAverageNumberOfVowels() {
