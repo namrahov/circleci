@@ -1,86 +1,46 @@
+version: 2.1
+orbs:
+  orb-tools: circleci/orb-tools@8.27.4
+  sonarcloud: sonarsource/sonarcloud@dev:alpha
 jobs:
-  build:
+  test:
+    parameters:
+      image:
+        type: string
     docker:
-      - image: 'node:latest'
+      - image:  cimg/openjdk:11.0.1
     steps:
       - checkout
       - sonarcloud/scan
+workflows:
+  publish-dev:
+    jobs:
+      - orb-tools/pack:
+          source-dir: src/main
+          destination-orb-path: orb.yml
+          workspace-path: orb.yml
+          artifact-path: orb.yml
+      - orb-tools/publish-dev:
+          context: Publishing Orb
+          orb-name: sonarsource/sonarcloud
+          requires: [orb-tools/pack]
+      - test:
+          name: test-node
+          image: node
+          context: SonarCloud Analysis
+          requires: [orb-tools/publish-dev]
+      - test:
+          name: test-circleci-python
+          image: circleci/python
+          context: SonarCloud Analysis
+          requires: [orb-tools/publish-dev]
+      - orb-tools/publish:
+          context: Publishing Orb
+          orb-ref: sonarsource/sonarcloud@1.1.1
+          attach-workspace: true
+          requires: [test-node, test-circleci-python]
+          filters:
+            branches:
+              only: master
 
-version: 2.1
-
-
-# This code is licensed from CircleCI to the user under the MIT license.
-# See here for details: https://circleci.com/developer/orbs/licensing
-commands:
-  scan:
-    description: Detect bugs and vulnerabilities
-    parameters:
-      cache_version:
-        default: 1
-        description: increment this value if the cache is corrupted and you want to start with a clean cache
-        type: integer
-      project_root:
-        default: .
-        description: the root of the project that should be analyzed (relative to the root directory of the repository)
-        type: string
-      sonar_token_variable_name:
-        default: SONAR_TOKEN
-        description: the name of the environment variable where the SonarCloud API token is stored
-        type: env_var_name
-    steps:
-      - run:
-          command: mkdir -p /tmp/cache/scanner
-          name: Create cache directory if it doesn't exist
-      - restore_cache:
-          keys:
-            - v<<parameters.cache_version>>-sonarcloud-scanner-4.7.0.2747
-      - run:
-          command: |
-            set -e
-            VERSION=4.7.0.2747
-            SONAR_TOKEN=$<<parameters.sonar_token_variable_name>>
-            SCANNER_DIRECTORY=/tmp/cache/scanner
-            export SONAR_USER_HOME=$SCANNER_DIRECTORY/.sonar
-            OS="linux"
-            echo $SONAR_USER_HOME
-            
-            if [[ ! -x "$SCANNER_DIRECTORY/sonar-scanner-$VERSION-$OS/bin/sonar-scanner" ]]; then
-              curl -Ol https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-$VERSION-$OS.zip
-              unzip -qq -o sonar-scanner-cli-$VERSION-$OS.zip -d $SCANNER_DIRECTORY
-            fi
-            
-            chmod +x $SCANNER_DIRECTORY/sonar-scanner-$VERSION-$OS/bin/sonar-scanner
-            chmod +x $SCANNER_DIRECTORY/sonar-scanner-$VERSION-$OS/jre/bin/java
-            
-            cd <<parameters.project_root>>
-            $SCANNER_DIRECTORY/sonar-scanner-$VERSION-$OS/bin/sonar-scanner
-          environment:
-            SONARQUBE_SCANNER_PARAMS: '{"sonar.host.url":"https://sonarcloud.io"}'
-          name: SonarCloud
-      - save_cache:
-          key: v<<parameters.cache_version>>-sonarcloud-scanner-4.7.0.2747
-          paths: /tmp/cache/scanner
-description: Detect bugs and vulnerabilities in your repository.
-display:
-  home_url: https://www.sonarcloud.io/
-  source_url: https://github.com/SonarSource/sonarcloud-circleci-orb
-examples:
-  scan-docker:
-    description: Use the sonarcloud orb to detect bugs and vulnerabilities in your repository
-    usage:
-      jobs:
-        build:
-          docker:
-            - image: node:latest
-          steps:
-            - checkout
-            - sonarcloud/scan
-      orbs:
-        sonarcloud: sonarsource/sonarcloud@1.1.0
-      version: 2.1
-      workflows:
-        main:
-          jobs:
-            - build:
-                context: sonarcloud
 
