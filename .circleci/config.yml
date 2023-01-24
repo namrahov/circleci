@@ -84,9 +84,3 @@ examples:
             - build:
                 context: sonarcloud
 
-
-workflows:
-  main:
-    jobs:
-      - build:
-          context: sonarcloud
