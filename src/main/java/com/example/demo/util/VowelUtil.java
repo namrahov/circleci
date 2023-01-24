@@ -46,12 +46,10 @@ public class VowelUtil {
         List<Word> wordsIndicatorsList = new ArrayList<>();
         String vowels = "aeiou";
 
-
         for (int i = 0; i < words.length; i++) {
 
             Set<Character> vowelsOfWord = new TreeSet<>();
             int countOfVowelsOfWord = 0;
-
 
             for (int k = 0; k < words[i].length(); k++) {
                 char letterOfString = words[i].charAt(k);
@@ -103,7 +101,6 @@ public class VowelUtil {
     }
 
     private String setToString(Set<Character> vowelsOfWord) {
-
         String str = Joiner.on(",").join(vowelsOfWord);
 
         return "{" + str + "}";
