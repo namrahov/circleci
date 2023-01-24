@@ -3,7 +3,7 @@ version: 2.1
 jobs:
   test:
     docker:
-      - image: cimg/openjdk:11.0.1
+      - image: cimg/openjdk:17.0.1
     steps:
       - checkout
       - run:
@@ -11,7 +11,7 @@ jobs:
           command: ./gradlew test --info
   build:
     docker:
-      - image: 'circleci/openjdk:11-jdk'
+      - image: 'circleci/openjdk:17-jdk'
     steps:
       - checkout
       - run:
