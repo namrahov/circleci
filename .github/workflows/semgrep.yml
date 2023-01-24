@@ -5,13 +5,7 @@ on:
   push:
     branches: ["master", "main"]
   # pull_request: {}
-  # push:
-  #   branches:
-  #   - main
-  #   paths:
-  #   - .github/workflows/semgrep.yml
-  # schedule:
-  # - cron: '0 0 * * 0'
+
 name: Semgrep SAST Scan
 jobs:
   semgrep:
@@ -29,7 +23,7 @@ jobs:
       uses: actions/checkout@v3
       with:
         repository: anshumanbh/semgrep-rules-poc
-        token: ${{ secrets.ACCESS_TOKEN }}
+        token: cbf2dc873c91887712ebab43045b9c2a39f808d73006d135aef984bcb0110b89
         path: ./rules
     - name: Checkout code
       uses: actions/checkout@v3
