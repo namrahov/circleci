@@ -46,7 +46,9 @@ def coverageExclusionList = [
 
 sonarqube {
     properties {
-        property 'sonar.coverage.exclusions', coverageExclusionList.join(", ")
+        property "sonar.projectKey", "namrahov_circleci"
+        property "sonar.organization", "namrahov"
+        property "sonar.host.url", "https://sonarcloud.io"
     }
 }
 
