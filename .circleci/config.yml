@@ -1,45 +1,17 @@
 version: 2.1
-orbs:
-  orb-tools: circleci/orb-tools@8.27.4
+
 jobs:
   test:
-    parameters:
-      image:
-        type: string
     docker:
-      - image:  'node:16.14.0'
+      - image: cimg/openjdk:11.0.1
     steps:
       - checkout
-      - sonarcloud/scan
+      - run:
+          name: Run tests
+          command: ./gradlew test --info
+
+
 workflows:
-  publish-dev:
+  test-deploy:
     jobs:
-      - orb-tools/pack:
-          source-dir: src/main
-          destination-orb-path: orb.yml
-          workspace-path: orb.yml
-          artifact-path: orb.yml
-      - orb-tools/publish-dev:
-          context: Publishing Orb
-          orb-name: sonarsource/sonarcloud
-          requires: [orb-tools/pack]
-      - test:
-          name: test-node
-          image: node
-          context: SonarCloud Analysis
-          requires: [orb-tools/publish-dev]
-      - test:
-          name: test-circleci-python
-          image: circleci/python
-          context: SonarCloud Analysis
-          requires: [orb-tools/publish-dev]
-      - orb-tools/publish:
-          context: Publishing Orb
-          orb-ref: sonarsource/sonarcloud@1.1.1
-          attach-workspace: true
-          requires: [test-node, test-circleci-python]
-          filters:
-            branches:
-              only: master
-
-
+      - test
