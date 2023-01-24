@@ -1,16 +1,27 @@
 version: 2.1
 
 jobs:
+  test:
+    docker:
+      - image: cimg/openjdk:11.0.1
+    steps:
+      - checkout
+      - run:
+          name: Run tests
+          command: ./gradlew test --info
   build:
     docker:
-      - image: circleci/openjdk:11-jdk
+      - image: 'circleci/openjdk:11-jdk'
     steps:
       - checkout
       - run:
           name: Analyze on SonarCloud
-          command: gradle build sonarqube"
+          command: gradle build sonarqube
 
 workflows:
+  test-deploy:
+    jobs:
+      - test
   main:
     jobs:
       - build:
