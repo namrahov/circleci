@@ -1,3 +1,15 @@
+buildscript {
+    ext {
+        springBootVersion = '3.0.2.RELEASE'
+    }
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+    }
+}
+
 plugins {
     id 'java'
     id 'org.springframework.boot' version '3.0.2'
@@ -14,9 +26,6 @@ group = 'com.example'
 version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '17'
 
-repositories {
-    mavenCentral()
-}
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
@@ -50,6 +59,11 @@ sonarqube {
         property "sonar.organization", "namrahov"
         property "sonar.host.url", "https://sonarcloud.io"
     }
+}
+
+jar {
+    enabled = true
+    archiveFileName = "${project.name}-light.jar"
 }
 
 checkstyle {
