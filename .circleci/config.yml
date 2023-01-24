@@ -1,14 +1,13 @@
 version: 2.1
 orbs:
   orb-tools: circleci/orb-tools@8.27.4
-  sonarcloud: sonarsource/sonarcloud@dev:alpha
 jobs:
   test:
     parameters:
       image:
         type: string
     docker:
-      - image:  cimg/openjdk:11.0.1
+      - image:  'node:16.14.0'
     steps:
       - checkout
       - sonarcloud/scan
