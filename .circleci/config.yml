@@ -1,15 +1,6 @@
 version: 2.1
 
-orbs:
-  sonarcloud: sonarsource/sonarcloud@1.1.1
-
 jobs:
-  build:
-    docker:
-      - image: 'node:latest'
-    steps:
-      - checkout
-      - sonarcloud/scan
   test:
     docker:
       - image: cimg/openjdk:17.0.1
@@ -23,7 +14,3 @@ workflows:
   test-deploy:
     jobs:
       - test
-  main:
-    jobs:
-      - build:
-          context: sonarcloud
