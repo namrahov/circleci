@@ -2,8 +2,8 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '3.0.2'
     id "org.sonarqube" version "3.0"
-    id "jacoco"
     id 'io.spring.dependency-management' version '1.1.0'
+    id 'jacoco'
 }
 
 apply plugin: 'groovy'
@@ -13,7 +13,6 @@ apply plugin: 'jacoco'
 apply plugin: 'org.sonarqube'
 
 group = 'com.example'
-version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '17'
 
 
@@ -43,18 +42,22 @@ tasks.named('test') {
     useJUnitPlatform()
 }
 
-def coverageExclusionList = [
-        "**/com/example/demo/DemoApplication.java",
-        "**/com/example/demo/model/**/*"
-]
-
 jar {
     enabled = true
     archiveFileName = "${project.name}-light.jar"
 }
 
+def coverageExclusionList = [
+        "**/com/example/demo/DemoApplication.java",
+        "**/com/unitech/model/**/*"
+]
+
+
 sonarqube {
     properties {
+        property "sonar.projectKey", "namrahov_circleci"
+        property "sonar.organization", "namrahov"
+        property "sonar.host.url", "https://sonarcloud.io"
         property 'sonar.coverage.exclusions', coverageExclusionList.join(", ")
     }
 }
