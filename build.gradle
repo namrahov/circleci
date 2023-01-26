@@ -47,6 +47,7 @@ dependencies {
 archivesBaseName = "${project.name}"
 
 tasks.named('test') {
+    task.outputs.cacheIf { true }
     useJUnitPlatform()
 }
 
