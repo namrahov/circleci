@@ -14,9 +14,22 @@ public class VowelService {
     public void calculateAverageNumberOfVowels() {
         log.info("ActionLog.calculateAverageNumberOfVowels.start");
 
-        var words = vowelUtil.readFileAndTakeWords();
+        var words = vowelUtil
+
+                .readFileAndTakeWords();
 
         var wordsIndicatorsList = vowelUtil.findWordsIndicators(words);
+
+
+
+
+
+
+
+
+
+
+
 
         var resultMap = vowelUtil.groupByVowelsOfWordAndSizeOfWord(wordsIndicatorsList);
 
