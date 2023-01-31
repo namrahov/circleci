@@ -21,3 +21,4 @@ public class VowelController {
         vowelService.calculateAverageNumberOfVowels();
     }
 }
+
